@@ -1,6 +1,9 @@
 # ChatDesafio
 
-Chat room using nodejs, tools and requirements:
+After configuration, to use the chat, open your browser and type localhost
+(its on default port 80, so no need to specify a port)
+
+This chat room uses nodejs, with the following tools and requirements:
 
 NodeJS
 https://nodejs.org/download/
