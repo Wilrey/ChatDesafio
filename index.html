@@ -1,0 +1,66 @@
+<!doctype html>
+<html>
+  <head>
+    <title>Finesource Challenge</title>
+    <style>
+      * { margin: 0; padding: 0; box-sizing: border-box; }
+      body {
+        border: 2px solid blue;
+        max-width: 1000px;
+        margin: 10px auto;
+        padding: 10px auto;
+        display: -webkit-box;
+        -webkit-box-orient: vertical;
+        -webkit-box-flex: 1;
+        -webkit-border-radius: 5px;
+        -webkit-box-shadow: rgb(110,110,110) 10px 10px 10px}
+      h2 { font: 24px Helvetica, Arial; color: black; text-align: center; font-weight: bolder; margin: 5px; padding: 5px;}
+      label { font: 13px Helvetica, Arial; color: blue; margin: 5px; padding: 5px;}
+      #user { border: 1; padding: 5px; width: 15%; margin: 5px; }
+      #messageInput { border: 1; padding: 5px; width: 55%; margin: 5px; }
+      button { width: 10%; background: rgb(130, 224, 255); margin: 5px; padding: 5px;}
+      ul { border: 2px solid green; margin: 5px; padding: 5px;}
+      #messageList { list-style-type: none; margin: 5px; padding: 5px; }
+      #messageList li { padding: 10px 10px; }
+      #messageList li:nth-child(odd) { background: #eee; }
+    </style>
+  </head>
+  <script src="/socket.io/socket.io.js"></script>
+  <script>
+    var socket = io();
+  
+    //function to send the messages
+    function sendMessage() {
+      //gets the name and the message
+      var user = document.getElementById("user").value;
+      var msg = document.getElementById("messageInput").value;
+      
+      //gets the whole list of messages and add the new message at the end
+      var ul = document.getElementById("messageList");
+      var li = document.createElement("li");
+      li.appendChild(document.createTextNode('You said: ' + msg));
+      ul.appendChild(li);
+
+      //cleanses the message field and sends to the server
+      document.getElementById("messageInput").value = "";
+      socket.emit('chat message', user, msg);
+    }
+
+    //function to get the messages
+    socket.on('chat message', function(msg){
+      //gets the whole list of messages and add the new message at the end
+      var ul = document.getElementById("messageList");
+      var li = document.createElement("li");
+      li.appendChild(document.createTextNode(msg));
+      ul.appendChild(li);
+    });
+  </script>
+  <body>
+    <h2>Finesource Challenge: Chat Room</h2>
+    <label for="user">User</label>
+    <input id="user"/>
+    <label for="messageInput">Message</label>
+    <input id="messageInput"/><button onclick="sendMessage()">Send</button>
+    <ul id="messageList"></ul>
+  </body>
+</html>
